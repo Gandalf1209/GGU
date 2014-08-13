@@ -1,4 +1,3 @@
-GGU
-===
+GGU + modules repository
 
-Genesis Game Utility repository
+See documentation.pdf for details.
