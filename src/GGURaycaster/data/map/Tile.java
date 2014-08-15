@@ -25,7 +25,7 @@ public class Tile {
         this.xCor = xCor;
         this.yCor = yCor;
     }
-
+/*
     public Wall getVertWall(int y){
         if(y == 1){
             return top;
@@ -43,6 +43,23 @@ public class Tile {
             return right;
         }
         return null;
+    }
+    */
+
+    public Wall getTop() {
+        return top;
+    }
+
+    public Wall getBottom() {
+        return bottom;
+    }
+
+    public Wall getLeft() {
+        return left;
+    }
+
+    public Wall getRight() {
+        return right;
     }
 
     public void setSolid(boolean solid){

@@ -6,14 +6,22 @@ public class Wall {
 
     BufferedImage texture;
 
-    public final double height = 1;
-    public final double position = 0;
+    public double height = 1;
+    public double position = 0;
 
     public Wall(BufferedImage texture){
         this.texture = texture;
     }
 
+    public void setHeight(double height){
+        this.height = height;
+    }
+    public void setPosition(double position){
+        this.position = position;
+    }
+
     public BufferedImage getWall(){
         return texture;
     }
+
 }

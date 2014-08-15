@@ -95,7 +95,11 @@ public class WallFinder {
                 intercept = 1 - intercept;
             }
 
-            return new RayIntersect(tile.getVertWall(1), intercept, posX, posY, x, z);
+            if(trajY > 0){
+                return new RayIntersect(tile.getTop(), intercept, posX, posY, x, z);
+            }else{
+                return new RayIntersect(tile.getBottom(), intercept, posX, posY, x, z);
+            }
 
         }
 
@@ -142,7 +146,11 @@ public class WallFinder {
                 intercept = 1 - intercept;
             }
 
-            return new RayIntersect(tile.getHorizWall(1), intercept, posX, posY, x, z);
+            if(trajX > 0) {
+                return new RayIntersect(tile.getLeft(), intercept, posX, posY, x, z);
+            }else{
+                return new RayIntersect(tile.getRight(), intercept, posX, posY, x, z);
+            }
 
         }
 

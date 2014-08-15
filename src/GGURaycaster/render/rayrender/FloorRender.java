@@ -41,7 +41,7 @@ public class FloorRender {
         }
 
     }
-    public void renderPlane(Screen screen, Camera camera, Map map, int startY, int endY, int x, double xGrad, double sin, double cos, boolean ceiling){
+    public void renderPlane(Screen screen, Camera camera, Map map, int wallY1, int wallY2, int x, double xGrad, double sin, double cos, boolean ceiling){
 
         //Pre-computed constants - Ignore these
         double halfheight = screen.getHeight() / 2;
@@ -52,6 +52,15 @@ public class FloorRender {
         double cameraX = camera.getX();
         double cameraY = camera.getY();
         double cameraZ = camera.getZ();
+
+        int startY = wallY1;
+        int endY = wallY2;
+
+        if(ceiling == true){
+            endY = (int)halfheight;
+        }else{
+            startY = (int)halfheight;
+        }
 
         ///////////////////////////////////////////
         //Disgusting for optimisation reasons
