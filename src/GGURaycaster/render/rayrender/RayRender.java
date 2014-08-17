@@ -27,6 +27,7 @@ public class RayRender {
     public void update(){
         entityRender.updateAngle(raycaster.getCamera().getAngle());
         entityStaticRender.updateAngle(raycaster.getCamera().getAngle());
+        floorRender.update();
         Shader.setViewDistance(raycaster.getCamera().getViewDistance());
     }
     public void renderAll(){

@@ -2,9 +2,9 @@ package GGU.utility.data.loaders.audio;
 
 import GGU.debug.Debug;
 import GGU.utility.OutputUtility;
+import GGU.utility.audio.AudioManager;
 import GGU.utility.data.loaders.LoadingList;
 import GGU.utility.data.loaders.LoadingTicket;
-import game.audio.AudioManager;
 
 import java.util.ArrayList;
 

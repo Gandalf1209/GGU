@@ -1,13 +1,13 @@
 package GGU.utility.math;
 
-public class TrigTable {
+public class LookupTable {
 
     double tau;
     int precision;
 
-    double[] sin, cos, tan;
+    double[] sin, cos, tan, alpha;
 
-    public TrigTable(int precision){
+    public LookupTable(int precision){
         this.precision = precision;
         this.tau = Math.PI * 2;
         generateTable(precision);
@@ -24,6 +24,11 @@ public class TrigTable {
             cos[i] = Math.cos(theta);
             tan[i] = Math.tan(theta);
         }
+
+        alpha = new double[256];
+        for(int i = 0; i < 256; i++){
+            alpha[i] = (((double)i) / 255);
+        }
     }
     public double sin(double theta){
         return sin[index(theta)];
@@ -34,6 +39,7 @@ public class TrigTable {
     public double tan(double theta){
         return tan[index(theta)];
     }
+    public double alpha(int index) { return alpha[index]; }
     public int index(double theta){
         double precision = this.precision;
         int index = (int)((theta * precision) / tau) % this.precision;

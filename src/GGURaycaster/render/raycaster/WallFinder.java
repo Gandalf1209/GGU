@@ -1,6 +1,6 @@
 package GGURaycaster.render.raycaster;
 
-import GGU.utility.math.TrigTable;
+import GGU.utility.math.LookupTable;
 import GGURaycaster.data.map.Map;
 import GGURaycaster.data.map.Tile;
 import GGURaycaster.render.RayIntersect;
@@ -9,7 +9,7 @@ import GGURaycaster.render.Raycaster;
 public class WallFinder {
 
     Map map;
-    TrigTable math;
+    LookupTable math;
 
     final int MAX_LOOPS;
 

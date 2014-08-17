@@ -1,7 +1,7 @@
 package GGURaycaster.data.entity;
 
-import game.universe.Universe;
 import GGURaycaster.render.Raycaster;
+import game.universe.Universe;
 
 import java.util.ArrayList;
 

@@ -1,13 +1,13 @@
 package GGU;
 
 import GGU.utility.OutputUtility;
+import GGU.utility.audio.AudioManager;
 import GGU.utility.config.ConfigurationLoader;
 import GGU.utility.data.GameData;
 import GGU.utility.data.loaders.ResourceLoader;
 import GGU.utility.display.DisplayHandler;
 import GGU.utility.display.OpenGLHandler;
 import GGU.utility.timing.FPSTimer;
-import game.audio.AudioManager;
 import game.states.State;
 
 import java.util.ArrayList;

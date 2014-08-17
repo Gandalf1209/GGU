@@ -1,7 +1,6 @@
 package GGU.utility.config;
 
 import GGU.utility.FileUtility;
-import GGU.utility.OutputUtility;
 import GGU.utility.parsers.ini.INIFile;
 import GGU.utility.parsers.ini.INIParser;
 

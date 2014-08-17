@@ -1,11 +1,10 @@
 package GGURaycaster.render;
 
-import GGU.utility.config.Configuration;
 import GGU.utility.config.ConfigurationLoader;
 import GGU.utility.data.opengl.OpenGLTexture;
 import GGU.utility.display.OpenGLHandler;
 import GGU.utility.display.OpenGLUtility;
-import GGU.utility.math.TrigTable;
+import GGU.utility.math.LookupTable;
 import GGURaycaster.RaycasterConfiguration;
 import GGURaycaster.data.entity.EntityManager;
 import GGURaycaster.data.map.Map;
@@ -13,7 +12,6 @@ import GGURaycaster.render.data.Camera;
 import GGURaycaster.render.data.Screen;
 import GGURaycaster.render.raycaster.WallFinder;
 import GGURaycaster.render.rayrender.RayRender;
-import sun.security.krb5.Config;
 
 import java.util.Random;
 
@@ -28,7 +26,7 @@ public class Raycaster {
     Map map;
     WallFinder wallfinder;
     RayRender rayRender;
-    TrigTable table;
+    LookupTable table;
     EntityManager entityManager;
 
     public static Random random;
@@ -39,7 +37,7 @@ public class Raycaster {
         this.configuration = ((RaycasterConfiguration)ConfigurationLoader.getConfiguration(new RaycasterConfiguration()).getVariables());
         this.loadConstants(this.configuration);
 
-        this.table = new TrigTable(trigPrecision);
+        this.table = new LookupTable(trigPrecision);
         this.screen = new Screen(width, height);
         this.rendered = new OpenGLTexture(screen.getData(), width, height);
         this.camera = new Camera(1, OpenGLHandler.getHeight(), Math.PI/2, 4);
@@ -89,10 +87,13 @@ public class Raycaster {
     public RayRender getRayRender(){
         return rayRender;
     }
-    public TrigTable getTable(){
+    public LookupTable getTable(){
         return this.table;
     }
     public EntityManager getEntityManager(){
         return entityManager;
+    }
+    public RaycasterConfiguration getConfig(){
+        return this.configuration;
     }
 }

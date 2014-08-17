@@ -7,8 +7,6 @@ import GGU.utility.parsers.ini.INIParameter;
 import GGU.utility.parsers.ini.INIParameterType;
 import GGU.utility.parsers.ini.INISection;
 
-import java.awt.*;
-
 /**
  * Configuration used to intiailise the raycaster
  */
@@ -19,6 +17,8 @@ public class RaycasterConfiguration extends ConfigurationInterface {
             RESOLUTION_Y,
             TRIGPRECISION
                    ;
+    public double
+            STATIC_CLIP;
 
     public void parse(Configuration config){
 
@@ -29,6 +29,7 @@ public class RaycasterConfiguration extends ConfigurationInterface {
         RESOLUTION_X = rendering.getParameter("resolutionX").getIntegerValue();
         RESOLUTION_Y = rendering.getParameter("resolutionY").getIntegerValue();
         TRIGPRECISION = rendering.getParameter("trigprecision").getIntegerValue();
+        STATIC_CLIP = rendering.getParameter("staticclip").getDoubleValue();
 
     }
 
@@ -40,6 +41,7 @@ public class RaycasterConfiguration extends ConfigurationInterface {
         display.addParameter(new INIParameter("resolutionX", "" + 320, INIParameterType.INT));
         display.addParameter(new INIParameter("resolutionY", "" + 240, INIParameterType.INT));
         display.addParameter(new INIParameter("trigprecision", "" + 65536, INIParameterType.INT));
+        display.addParameter(new INIParameter("staticclip", "" + 0.2, INIParameterType.DECIMAL));
         file.addSection(display);
 
         return file;

@@ -1,23 +1,21 @@
 package GGURaycaster.data.entity;
 
-import game.universe.Universe;
 import GGURaycaster.render.Raycaster;
+import game.universe.Universe;
 
 import java.awt.image.BufferedImage;
 
 public class Entity {
 
-    public Universe universe;
-
     BufferedImage render;
     double x, y, z;
     double width, height;
-    boolean added;
+    boolean added, alphaEnabled;
 
     public Entity(BufferedImage render, double x, double y, double z, double width, double height){
-        this.universe = universe;
         this.render = render;
         this.added = false;
+        this.alphaEnabled = true;
         setPosition(x, y, z);
         setWidth(width);
         setHeight(height);
@@ -29,6 +27,13 @@ public class Entity {
     }
 
     //Getters & setters
+    public boolean isAlphaEnabled(){
+        return this.alphaEnabled;
+    }
+    public void setAlphaEnabled(boolean alphaEnabled){
+        this.alphaEnabled = alphaEnabled;
+    }
+
     public void setAdded(boolean added){
         this.added = added;
     }

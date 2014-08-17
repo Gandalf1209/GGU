@@ -1,7 +1,7 @@
 package GGURaycaster.render.rayrender;
 
 import GGU.utility.OutputUtility;
-import GGU.utility.math.TrigTable;
+import GGU.utility.math.LookupTable;
 import GGURaycaster.data.map.Map;
 import GGURaycaster.data.map.Tile;
 import GGURaycaster.render.Raycaster;
@@ -13,11 +13,34 @@ import java.awt.image.BufferedImage;
 public class FloorRender {
 
     Raycaster raycaster;
-    TrigTable math;
+    LookupTable math;
+
+    double cameraheight;
+    int ceilingboundary;
+    int floorboundary;
 
     public FloorRender(Raycaster raycaster){
         this.raycaster = raycaster;
         this.math = raycaster.getTable();
+    }
+    public void update(){
+        Camera camera = raycaster.getCamera();
+        Screen screen = raycaster.getBuffer();
+
+        if(camera.getHeight() == this.cameraheight){
+            return;
+        }
+
+        double distance = camera.getViewDistance();
+        double height = camera.getY();
+        double halfheight = screen.getHeight() / 2;
+        double floor = (height / distance) * camera.getProjectionDistance();
+        double ceiling = ((raycaster.getMap().getCeilingHeight() - height) / distance) * camera.getProjectionDistance();
+
+        this.ceilingboundary = (int)halfheight - (int)(ceiling * halfheight);
+        this.floorboundary = (int)(floor * halfheight) + (int)halfheight;
+
+        this.cameraheight = height;
     }
 
     public void renderPlanes(int x, int wallY1, int wallY2){
@@ -34,10 +57,18 @@ public class FloorRender {
         double xGrad = xPos / camera.getProjectionDistance();
 
         if(camera.getY() < map.getCeilingHeight() && map.hasCeiling()){
-            renderPlane(screen, camera, map, 0, wallY1, x, xGrad, sin, cos, true);
+            int boundary = wallY1;
+            if(boundary > this.ceilingboundary){
+                boundary = this.ceilingboundary;
+            }
+            renderPlane(screen, camera, map, 0, boundary, x, xGrad, sin, cos, true);
         }
         if(camera.getY() > 0){
-            renderPlane(screen, camera, map, wallY2, screen.getHeight(), x, xGrad, sin, cos, false);
+            int boundary = wallY2;
+            if(boundary < this.floorboundary){
+                boundary = this.floorboundary;
+            }
+            renderPlane(screen, camera, map, boundary, screen.getHeight(), x, xGrad, sin, cos, false);
         }
 
     }
@@ -56,11 +87,13 @@ public class FloorRender {
         int startY = wallY1;
         int endY = wallY2;
 
+        /*
         if(ceiling == true){
             endY = (int)halfheight;
         }else{
             startY = (int)halfheight;
         }
+        */
 
         ///////////////////////////////////////////
         //Disgusting for optimisation reasons

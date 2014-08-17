@@ -1,5 +1,6 @@
 package GGURaycaster.render.data;
 
+import GGU.utility.math.GraphicsUtility;
 import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
@@ -37,6 +38,8 @@ public class Screen {
 
     public void setPixel(int x, int y, int colour, double distance){
 
+        /*
+
         if(x < 0 || x >= width || y < 0 || y >= height){
             return;
         }
@@ -60,6 +63,45 @@ public class Screen {
 
         this.depthBuffer[x][y] = distance;
 
+        */
+
+        byte alpha = (byte)((colour>>24) & 0xFF);
+        byte red = (byte)((colour>>16) & 0xFF);
+        byte green = (byte)((colour>>8) & 0xFF);
+        byte blue = (byte)(colour & 0xFF);
+
+        setPixel(x, y, alpha, red, green, blue, distance);
+
+    }
+    public void setPixel(int x, int y, byte alpha, byte red, byte green, byte blue, double distance){
+        if(x < 0 || x >= width || y < 0 || y >= height){
+            return;
+        }
+
+        if(isNearer(x, y, distance) == false){
+            return;
+        }
+
+        //int position = ((x * height) + y)*4;
+        int position = ((y * width) + x)*4;
+
+        this.data.put(position, red);
+        this.data.put(position + 1, green);
+        this.data.put(position + 2, blue);
+        this.data.put(position + 3, alpha);
+
+        this.depthBuffer[x][y] = distance;
+    }
+    public int getPixel(int x, int y){
+        int position = ((y * width) + x)*4;
+        int[] pixel = new int[4];
+
+        pixel[1] = this.data.get(position);
+        pixel[2] = this.data.get(position + 1);
+        pixel[3] = this.data.get(position + 2);
+        pixel[0] = this.data.get(position + 3);
+
+        return GraphicsUtility.buildColour(pixel[0], pixel[1], pixel[2], pixel[3]);
     }
     public boolean isNearer(int x, int y, double distance){
         if(distance < this.depthBuffer[x][y] || this.depthBuffer[x][y] < 0){

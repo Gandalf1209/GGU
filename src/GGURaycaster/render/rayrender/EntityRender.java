@@ -1,6 +1,6 @@
 package GGURaycaster.render.rayrender;
 
-import GGU.utility.math.TrigTable;
+import GGU.utility.math.LookupTable;
 import GGURaycaster.data.entity.Entity;
 import GGURaycaster.render.Raycaster;
 import GGURaycaster.render.data.Camera;
@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 public class EntityRender {
 
     Raycaster raycaster;
-    TrigTable table;
+    LookupTable table;
 
     double sin, cos;
 
@@ -89,19 +89,30 @@ public class EntityRender {
         }
 
         for(int posX = x1; posX < x2; posX++){
+
+            int x = posX - xPixel + pixelWidth/2;
+            int screenX = xPixel + x + offsetX;
+            int pixX = (int)(xGrad * ((double)x));
+
             for(int posY = y1; posY < y2; posY++){
 
-                int x = posX - xPixel + pixelWidth/2;
                 int y = posY - yPixel + pixelHeight/2;
-
-                int pixX = (int)(xGrad * ((double)x));
+                int screenY = yPixel + y + offsetY;
                 int pixY = (int)(yGrad * ((double)y));
 
-                int colour = Shader.getColour(image.getRGB(pixX, pixY), zPos);
+                int colour = 0;
+
+                if(entity.isAlphaEnabled() == true){
+                    int tex = image.getRGB(pixX, pixY);
+                    int alpha = (tex >> 24) & 0xFF;
+                    colour = Shader.getColourBlend(Shader.getColour(tex, zPos), screenX, screenY, screen, table.alpha(alpha), this.table);
+                }else{
+                    colour = Shader.getColour(image.getRGB(pixX, pixY), zPos);
+                }
                 if(colour == 0){
                     continue;
                 }
-                screen.setPixel(xPixel + x + offsetX, yPixel + y + offsetY, colour, zPos);
+                screen.setPixel(screenX, screenY, colour, zPos);
             }
         }
 

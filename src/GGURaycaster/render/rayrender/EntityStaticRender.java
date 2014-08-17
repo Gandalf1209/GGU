@@ -1,7 +1,7 @@
 package GGURaycaster.render.rayrender;
 
 import GGU.utility.math.Geometry;
-import GGU.utility.math.TrigTable;
+import GGU.utility.math.LookupTable;
 import GGURaycaster.data.entity.StaticEntity;
 import GGURaycaster.render.Raycaster;
 import GGURaycaster.render.data.Camera;
@@ -14,14 +14,15 @@ import java.awt.image.BufferedImage;
 public class EntityStaticRender {
 
     Raycaster raycaster;
-    TrigTable table;
+    LookupTable table;
 
     double sin, cos;
-    final double clip = 0.2;
+    double clip = 0.2;
 
     public EntityStaticRender(Raycaster raycaster){
         this.raycaster = raycaster;
         this.table = raycaster.getTable();
+        this.clip = raycaster.getConfig().STATIC_CLIP;
     }
 
     public void updateAngle(double angle){
@@ -70,11 +71,11 @@ public class EntityStaticRender {
         int[] p3 = screen.getOnScreen(point3);
         int[] p4 = screen.getOnScreen(point4);
 
-        renderWall(p1, p2, p3, p4, point2[2] - point[2], point[2], point2[2], x0, x1, entity.getRender());
+        renderWall(p1, p2, p3, p4, point2[2] - point[2], point[2], point2[2], x0, x1, entity.getRender(), entity.isAlphaEnabled());
 
     }
 
-    public void renderWall(int[] p1, int[] p2, int[] p3, int[] p4, double zDiff, double z0, double z1, double x0, double x1, BufferedImage image){
+    public void renderWall(int[] p1, int[] p2, int[] p3, int[] p4, double zDiff, double z0, double z1, double x0, double x1, BufferedImage image, boolean alphaEnabled){
 
         Screen screen = raycaster.getBuffer();
 
@@ -127,12 +128,26 @@ public class EntityStaticRender {
             for(int y = 0; y < yDiff; y++){
 
                 int yTex = (int)(((double)y + (pY1 - y1)) * yTexGrad);
-                int colour = Shader.getColour(image.getRGB(xTex, yTex), z);
+
+                int xPix = (int)xPos;
+                int yPix = y + pY1;
+
+                int tex = image.getRGB(xTex, yTex);
+
+                int colour = 0;
+
+                if(alphaEnabled == true) {
+                    int alpha = (tex >> 24) & 0xFF;
+                    colour = Shader.getColourBlend(Shader.getColour(tex, z), xPix, yPix, screen, table.alpha(alpha), this.table);
+                }else{
+                    colour = Shader.getColour(image.getRGB(xTex, yTex), z);
+                }
 
                 if(colour == 0){
                     continue;
                 }
-                screen.setPixel((int)xPos, y + pY1, colour, z);
+
+                screen.setPixel(xPix, yPix, colour, z);
             }
 
         }

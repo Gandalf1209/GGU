@@ -1,7 +1,5 @@
 package GGURaycaster.data.map;
 
-import GGU.utility.data.GameData;
-
 import java.awt.image.BufferedImage;
 
 public class Tile {
